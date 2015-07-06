@@ -45,6 +45,11 @@ module VagrantPlugins
                 FileUtils.copy_file source, dest
             end
 
+            def self.backup_file(source)
+                dest = self.timestamp_filename(source)
+                FileUtils.mv source, dest, :force => true if File.exists? source
+            end
+
             def self.timestamp_filename(file)
                 dir  = File.dirname(file)
                 base = File.basename(file, ".*")
