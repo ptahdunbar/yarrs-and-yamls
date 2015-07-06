@@ -87,11 +87,11 @@ def yarrs_and_yamls(config=nil)
                     override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
 
                     # Required parameters
-                    aws.ami = box["aws"]["ami"] || 'ami-d05e75b8'
-                    aws.instance_type = box["aws"]["instance_type"] || 't2.micro'
-                    aws.keypair_name = box["aws"]["keypair_name"] || raise("An error occurred. Missing aws 'keypair name'.")
-                    override.ssh.username = box["aws"]["username"] || 'ubuntu'
-                    override.ssh.private_key_path = box["aws"]["private_key_path"]
+                    aws.ami = box["aws"]["ami"] if box["aws"]["ami"]
+                    aws.instance_type = box["aws"]["instance_type"] if box["aws"]["instance_type"]
+                    aws.keypair_name = box["aws"]["keypair_name"] if box["aws"]["keypair_name"]
+                    override.ssh.username = box["aws"]["username"] if box["aws"]["username"]
+                    override.ssh.private_key_path = box["aws"]["private_key_path"] if box["aws"]["private_key_path"]
 
                     # Alternative approach: add keys into your .bashrc or .zshrc profile
                     # export AWS_SECRET_KEY=secret_key
@@ -143,6 +143,8 @@ end
 
 def get_nodes(v=nil)
     boxes = {}
+
+    return boxes if v["boxes"].empty?
 
     v["boxes"].collect do |box|
         next unless box["hostname"]
@@ -221,9 +223,7 @@ def get_nodes(v=nil)
         boxes[box["hostname"]]["gui"] = box["gui"] if box["gui"]
         boxes[box["hostname"]]["disable_vm_optimization"] = box["disable_vm_optimization"] if box.include? "disable_vm_optimization"
 
-		boxes[box["hostname"]]["aws"] ||= []
         boxes[box["hostname"]]["aws"] = box["aws"] if box["aws"]
-        boxes[box["hostname"]]["digital_ocean"] ||= []
         boxes[box["hostname"]]["digital_ocean"] = box["digital_ocean"] if box["digital_ocean"]
     end
 
