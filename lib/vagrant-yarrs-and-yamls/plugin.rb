@@ -9,19 +9,50 @@ module VagrantPlugins
 
             @@config = false
 
+            action_hook(:init, :environment_load) { maybe_create_yaml_file }
             action_hook(:load_config, Plugin::ALL_ACTIONS) { load_config }
 
             action_hook(:require_vagrant_plugins, :environment_load) {
-	            if ! self.get_config.empty?
+                if ! self.get_config.empty?
                     self.require_vagrant_plugins(self.get_config["required_plugins"]) if self.get_config["required_plugins"]
                 end
             }
+
+            def self.maybe_create_yaml_file
+                ARGV.each do |arg|
+                    if arg.include?('init') || arg.include?('--yaml') || arg.include?('--yamls') || arg.include?('--yarrs')
+                        self.create_yaml_file
+                    end
+                end
+            end
+
+            def self.create_yaml_file
+                source = __FILE__ + '/../../../example.Vagrantfile.yml'
+                source = File.realpath(source)
+                dest = Dir.pwd + '/Vagrantfile.yml'
+                self.backup_file(dest)
+                FileUtils.copy_file source, dest
+            end
+
+            def self.backup_file(source)
+                dest = self.timestamp_filename(source)
+                FileUtils.mv source, dest, :force => true if File.exists? source
+            end
+
+            def self.timestamp_filename(file)
+                dir  = File.dirname(file)
+                base = File.basename(file, ".*")
+                time = Time.now.to_i
+                ext  = File.extname(file)
+                File.join(dir, "#{base}.bak.#{time}#{ext}")
+            end
+
 
             def self.load_config
 
                 return @@config if @@config
 
-				@@config = []
+                @@config = []
                 configfile = ''
 
                 # Try Vagrant.local.yml next
