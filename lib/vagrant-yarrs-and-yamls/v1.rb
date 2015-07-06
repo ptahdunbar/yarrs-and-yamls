@@ -34,27 +34,27 @@ def yarrs_and_yamls(config=nil)
             end
 
             if box["synced_folders"]
-	            box["synced_folders"].each do |folder|
-	                node.vm.synced_folder folder[:host], folder[:guest], folder[:args]
-	            end
-	        end
+                box["synced_folders"].each do |folder|
+                    node.vm.synced_folder folder[:host], folder[:guest], folder[:args]
+                end
+            end
 
-	        if box["ssh"]
-	            node.ssh.username = box["ssh"]["username"] if box["ssh"]["username"]
-	            node.ssh.password = box["ssh"]["password"] if box["ssh"]["password"]
-	            node.ssh.host = box["ssh"]["host"] if box["ssh"]["host"]
-	            node.ssh.port = box["ssh"]["port"] if box["ssh"]["port"]
-	            node.ssh.guest_port = box["ssh"]["guest_port"] if box["ssh"]["guest_port"]
-	            node.ssh.private_key_path = box["ssh"]["private_key_path"] if box["ssh"]["private_key_path"]
-	            node.ssh.forward_agent = box["ssh"]["forward_agent"] if box["ssh"]["forward_agent"]
-	            node.ssh.forward_x11 = box["ssh"]["forward_x11"] if box["ssh"]["forward_x11"]
-	            node.ssh.insert_key = box["ssh"]["insert_key"] if box["ssh"]["insert_key"]
-	            node.ssh.proxy_command = box["ssh"]["proxy_command"] if box["ssh"]["proxy_command"]
-	            node.ssh.pty = box["ssh"]["pty"] if box["ssh"]["pty"]
-	            node.ssh.shell = box["ssh"]["shell"] if box["ssh"]["shell"]
-	        end
+            if box["ssh"]
+                node.ssh.username = box["ssh"]["username"] if box["ssh"]["username"]
+                node.ssh.password = box["ssh"]["password"] if box["ssh"]["password"]
+                node.ssh.host = box["ssh"]["host"] if box["ssh"]["host"]
+                node.ssh.port = box["ssh"]["port"] if box["ssh"]["port"]
+                node.ssh.guest_port = box["ssh"]["guest_port"] if box["ssh"]["guest_port"]
+                node.ssh.private_key_path = box["ssh"]["private_key_path"] if box["ssh"]["private_key_path"]
+                node.ssh.forward_agent = box["ssh"]["forward_agent"] if box["ssh"]["forward_agent"]
+                node.ssh.forward_x11 = box["ssh"]["forward_x11"] if box["ssh"]["forward_x11"]
+                node.ssh.insert_key = box["ssh"]["insert_key"] if box["ssh"]["insert_key"]
+                node.ssh.proxy_command = box["ssh"]["proxy_command"] if box["ssh"]["proxy_command"]
+                node.ssh.pty = box["ssh"]["pty"] if box["ssh"]["pty"]
+                node.ssh.shell = box["ssh"]["shell"] if box["ssh"]["shell"]
+            end
 
-	        if box["provision"]
+            if box["provision"]
                 box["provision"].each do |script|
                     node.vm.provision "shell" do |s|
                         s.inline = script["inline"] if script["inline"]
@@ -76,13 +76,13 @@ def yarrs_and_yamls(config=nil)
             end
 
             node.vm.provider :vmware_fusion do |vmware, override|
-	            override.vm.node_url = "http://files.vagrantup.com/precise64_vmware.node"
-	            vmware.gui = true if box["gui"]
-	            vmware.vmx["numvcpus"] = box["cpus"] if box["cpus"]
-	            vmware.vmx["memsize"] = box["cpus"] if box["memory"]
-	        end
+                override.vm.node_url = "http://files.vagrantup.com/precise64_vmware.node"
+                vmware.gui = true if box["gui"]
+                vmware.vmx["numvcpus"] = box["cpus"] if box["cpus"]
+                vmware.vmx["memsize"] = box["cpus"] if box["memory"]
+            end
 
-	        node.vm.provider :aws do |aws, override|
+            node.vm.provider :aws do |aws, override|
                 if box["aws"]
                     override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
 
@@ -139,6 +139,8 @@ def yarrs_and_yamls(config=nil)
             end
         end
     end
+
+    config
 end
 
 def get_nodes(v=nil)
@@ -150,7 +152,7 @@ def get_nodes(v=nil)
         next unless box["hostname"]
 
         boxes[box["hostname"]] = {}
-        
+
         boxes[box["hostname"]]["box"] = v["box"] if v["box"]
         boxes[box["hostname"]]["box"] = box["box"] if box["box"]
         boxes[box["hostname"]]["box_check_update"] = box["box_check_update"] if box["box_check_update"]
@@ -178,7 +180,7 @@ def get_nodes(v=nil)
                 boxes[box["hostname"]]["provision"].push(shell)
             end
         end
-        
+
         if box["forwarded_ports"]
             boxes[box["hostname"]]["forwarded_ports"] ||= []
             box["forwarded_ports"].each do |item|
@@ -219,7 +221,7 @@ def get_nodes(v=nil)
 
         box["cpus"] = box["cpu"] if box["cpu"]
         boxes[box["hostname"]]["cpus"] = box["cpus"] if box["cpus"]
-        
+
         boxes[box["hostname"]]["gui"] = box["gui"] if box["gui"]
         boxes[box["hostname"]]["disable_vm_optimization"] = box["disable_vm_optimization"] if box.include? "disable_vm_optimization"
 
