@@ -1,4 +1,4 @@
 ---
 boxes:
-    - hostname: coreos-34
+    - hostname: vagrant
       box: ubuntu/trusty64
