@@ -18,3 +18,5 @@ tmp
 .idea
 *.swp
 .vagrant
+*.yml
+*.bak.*
