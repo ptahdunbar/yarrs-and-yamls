@@ -138,9 +138,10 @@ def yarrs_and_yamls(config=nil)
                 end
             end
         end
-    end
 
-    config
+        yield hostname, box if block_given?
+
+    end
 end
 
 def get_nodes(v=nil)

@@ -6,5 +6,11 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-  yarrs_and_yamls(config)
+    yarrs_and_yamls(config) do |hostname, settings|
+        config.vm.define hostname do |node|
+            #
+            # Add your settings to Vagrantfile.yml
+            #
+        end
+    end
 end

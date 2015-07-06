@@ -1,3 +1,7 @@
+# Vagrantfile.yml accepts all values that normally go in Vagrantfile.
+#
+# For more information and examples, please see the online documentation at
+# https://github.com/ptahdunbar/yarrs-and-yamls
 ---
 boxes:
     - hostname: vagrant
