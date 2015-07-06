@@ -1,6 +1,4 @@
-# Yarrs And Yaml
-
-box
+# Yamls And Yarrs
 
 ## Installation
 
@@ -16,8 +14,6 @@ end
 ```
 
 Create a new file named `Vagrantfile.yml`
-
-
 
 ## Contributing
 
