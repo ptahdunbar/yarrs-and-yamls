@@ -7,7 +7,7 @@ group :development do
 end
 
 group :plugins do
-  gem "vagrant-yamls-and-yarrs", path: "."
+  gem "vagrant-yarrs-and-yamls", path: "."
   gem "vagrant-digitalocean"
   gem "vagrant-aws"
 end

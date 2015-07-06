@@ -1,8 +1,8 @@
-# Yamls And Yarrs
+# Yarrs And Yamls
 
 ## Installation
 
-`vagrant plugin install vagrant-yamls-and-yarrs`
+`vagrant plugin install vagrant-yarrs-and-yamls`
 
 ## Usage
 

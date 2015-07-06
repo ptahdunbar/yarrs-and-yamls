@@ -5,7 +5,7 @@ require_relative "v1"
 module VagrantPlugins
     module YarrsAndYamls
         class Plugin < Vagrant.plugin(2)
-            name "vagrant-yamls-and-yarrs"
+            name "vagrant-yarrs-and-yamls"
 
             @@config = false
 
