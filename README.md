@@ -6,6 +6,12 @@
 
 ## Usage
 
+Start a new vagrant project
+`vagrant init`
+
+Update an existing vagrant project
+`vagrant --yamls`
+
 Replace your Vagrantfile with:
 ```
 Vagrant.configure(2) do |config|
@@ -20,4 +26,17 @@ end
 ```
 
 Create a new file named `Vagrantfile.yml`
+```
+# Vagrantfile.yml accepts all values that normally go in Vagrantfile.
+#
+# For more information and examples, please see the online documentation at
+# https://github.com/ptahdunbar/yarrs-and-yamls
+---
+boxes:
+    - hostname: vagrant
+      box: ubuntu/trusty64
+```
 
+That's it! Boot up your environment:
+
+```vagrant up```
