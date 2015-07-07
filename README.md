@@ -12,7 +12,7 @@ Start a new vagrant project
 Update an existing vagrant project
 `vagrant --yamls`
 
-Replace your Vagrantfile with:
+Executing one of the above commands, your Vagrantfile should look like this now:
 ```
 Vagrant.configure(2) do |config|
     yarrs_and_yamls(config) do |hostname, settings|
