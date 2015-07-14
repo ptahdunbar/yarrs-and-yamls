@@ -6,3 +6,15 @@
 boxes:
     - hostname: vagrant
       box: ubuntu/trusty64
+
+    #   synced_folders:
+    #     - host: "."
+    #       guest: "/var/www"
+    #       owner: "www-data"
+    #       group: "www-data"
+    #       mount_options:
+    #         - dmode=775
+    #         - fmode=667
+
+    #   provision:
+    #     - path: path/to/script.sh
