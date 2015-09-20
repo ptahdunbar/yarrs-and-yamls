@@ -46,12 +46,26 @@ def yarrs(yamlfile, vagrant_config)
 end
 
 def apply_vagrant_hostupdater(node, settings)
-  if defined? VagrantPlugins::HostsUpdater && settings["hostname"] && settings["ip"]
+  return if ! defined? VagrantPlugins::HostsUpdater
+
+  return if !! ENV['VAGRANT_DEFAULT_PROVIDER'].to_s.index('digital_ocean')
+
+  return if ! get_cli_flag('digital_ocean')
+
+  if settings["hostname"] && settings["ip"]
     sites = get_config_part('sites', settings)
     node.hostsupdater.aliases = sites
   else
     puts "yarrs-and-yamls: ERROR - vagrant-hostsupdater not installed. Please update your /etc/hosts file for: #{settings}"
   end
+end
+
+def get_cli_flag(flag)
+    ARGV.each do |arg|
+        return true if arg.index(flag)
+    end
+
+    return false
 end
 
 def apply_vagrant_settings(node, settings)
@@ -211,7 +225,7 @@ def apply_digitalocean_providier(node, settings)
 
     override.ssh.private_key_path = settings["digital_ocean"]["private_key_path"] || ENV["DIGITAL_OCEAN_PRIVATE_KEY_PATH"]
     override.ssh.username = settings["digital_ocean"]["username"] if settings["digital_ocean"]["username"]
-    digital_ocean.ssh_key_name = settings["digital_ocean"].include?("ssh_key_name") ? settings["digital_ocean"]["ssh_key_name"] : 'Vagrant'
+    digital_ocean.ssh_key_name = settings["digital_ocean"].include?("ssh_key_name") ? settings["digital_ocean"]["ssh_key_name"] : ENV["DIGITAL_OCEAN_SSH_KEY_NAME"]
 
     # Optional
     digital_ocean.image = settings["digital_ocean"].include?("image") ? settings["digital_ocean"]["image"] : "ubuntu-14-04-x64"

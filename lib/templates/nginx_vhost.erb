@@ -5,15 +5,15 @@ server {
     <% if ssl? %>
 
     listen 443 ssl;
-    ssl_certificate     /etc/nginx/ssl/<% host %>.crt;
-    ssl_certificate_key /etc/nginx/ssl/<% host %>.key;
+    ssl_certificate     /etc/nginx/ssl/<%= host %>.crt;
+    ssl_certificate_key /etc/nginx/ssl/<%= host %>.key;
 
     <% end %>
     root <%= path %>;
     index index.html index.php;
     <% if host? %>
 
-    server_name <% host %>;
+    server_name <%= host %>;
 
     <% end %>
     location / {
@@ -24,7 +24,7 @@ server {
     location = /robots.txt  { access_log off; log_not_found off; }
 
     access_log off;
-    error_log  /var/log/nginx/<% host %>-error.log error;
+    error_log  /var/log/nginx/<%= host %>-error.log error;
     sendfile off;
 
     location ~ \.php\$ {
