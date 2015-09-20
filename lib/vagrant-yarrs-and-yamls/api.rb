@@ -20,6 +20,9 @@ def yarrs(yamlfile, vagrant_config)
     # format nodes into instances
     instances = prepare(config)
 
+    # DEBUG:
+    # puts "instances", instances
+
     # loop through each instance and apply settings
     instances.each do |hostname, settings|
 
@@ -45,10 +48,9 @@ end
 def apply_vagrant_hostupdater(node, settings)
   if defined? VagrantPlugins::HostsUpdater && settings["hostname"] && settings["ip"]
     sites = get_config_part('sites', settings)
-    puts "yarrs-and-yamls: updating your host file with: #{sites}"
     node.hostsupdater.aliases = sites
   else
-    puts "yarrs-and-yamls: vagrant-hostsupdater not installed. Please update your /etc/hosts file for: #{settings}"
+    puts "yarrs-and-yamls: ERROR - vagrant-hostsupdater not installed. Please update your /etc/hosts file for: #{settings}"
   end
 end
 
@@ -169,7 +171,7 @@ def apply_aws_provider(node, settings)
     aws.instance_type = settings["aws"]["instance_type"] if settings["aws"]["instance_type"]
     aws.keypair_name = settings["aws"]["keypair_name"] if settings["aws"]["keypair_name"]
     override.ssh.username = settings["aws"]["username"] if settings["aws"]["username"]
-    override.ssh.private_key_path = settings["aws"]["private_key_path"] if settings["aws"]["private_key_path"]
+    override.ssh.private_key_path = settings["aws"]["private_key_path"] || ENV["AWS_PRIVATE_KEY_PATH"]
 
     # Alternative approach: add keys into your .bashrc or .zshrc profile
     # export AWS_SECRET_KEY=secret_key
@@ -199,15 +201,19 @@ end
 def apply_digitalocean_providier(node, settings)
   return unless settings["digital_ocean"]
 
+  # DEBUG:
+  # puts "digital_ocean", settings["digital_ocean"]
+
   node.vm.provider :digital_ocean do |digital_ocean, override|
     override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
 
     digital_ocean.token = settings["digital_ocean"].include?("token") ? settings["digital_ocean"]["token"] : ENV["DIGITAL_OCEAN_TOKEN"]
 
-    # Optional
-    override.ssh.private_key_path = settings["digital_ocean"]["private_key_path"]
+    override.ssh.private_key_path = settings["digital_ocean"]["private_key_path"] || ENV["DIGITAL_OCEAN_PRIVATE_KEY_PATH"]
     override.ssh.username = settings["digital_ocean"]["username"] if settings["digital_ocean"]["username"]
     digital_ocean.ssh_key_name = settings["digital_ocean"].include?("ssh_key_name") ? settings["digital_ocean"]["ssh_key_name"] : 'Vagrant'
+
+    # Optional
     digital_ocean.image = settings["digital_ocean"].include?("image") ? settings["digital_ocean"]["image"] : "ubuntu-14-04-x64"
     digital_ocean.region = settings["digital_ocean"].include?("region") ? settings["digital_ocean"]["region"] : "nyc2"
     digital_ocean.size = settings["digital_ocean"].include?("size") ? settings["digital_ocean"]["size"] : "512mb"
@@ -227,6 +233,10 @@ def get_config_from_file(configfile)
   configfile = File.expand_path(configfile)
   localfile  = File.expand_path(configfile.dup)
   localfile  = localfile.insert(configfile.index('.yaml'), '.local')
+
+  # DEBUG:
+  # puts "configfile", configfile
+  # puts "localfile", localfile
 
   if File.exists? localfile
       config = YAML.load_file(localfile)
