@@ -1,3 +1,4 @@
+require 'vagrant'
 require 'yaml'
 require 'erb'
 
