@@ -43,7 +43,11 @@ end
 
 def apply_vagrant_hostupdater(node, settings)
   if defined? VagrantPlugins::HostsUpdater && settings["hostname"] && settings["ip"]
-    node.hostsupdater.aliases = get_config_part('sites', settings)
+    sites = get_config_part('sites', settings)
+    @env.ui.success("yarrs-and-yamls: updating your host file with: #{sites}")
+    node.hostsupdater.aliases = sites
+  else
+    @env.ui.error("yarrs-and-yamls: vagrant-hostsupdater not installed. Please update your /etc/hosts file for #{settings}")
   end
 end
 
