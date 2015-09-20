@@ -1,24 +1,22 @@
-# Yarrs And Yamls
+# Yarrs & Yamls
 
 ## Installation
 
 `vagrant plugin install vagrant-yarrs-and-yamls`
 
-## Usage
+# Usage
 
-Replace your Vagrantfile with:
-```
-Vagrant.configure(2) do |config|
-  yarrs_and_yamls(config)
-end
-```
+# Contributing
 
-Create a new file named `Vagrantfile.yml`
+https://docs.vagrantup.com/v2/plugins/development-basics.html
 
-## Contributing
+https://docs.vagrantup.com/v2/plugins/packaging.html
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+# local testing
+bundle exec vagrant
+
+# local builds
+rake package
+
+# upload to rubygems
+rake release

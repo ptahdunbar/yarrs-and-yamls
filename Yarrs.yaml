@@ -1,0 +1,29 @@
+# Vagrantfile.yml accepts all values that normally go in Vagrantfile.
+#
+# For more information and examples, please see the online documentation at
+# https://github.com/ptahdunbar/yarrs-and-yamls
+---
+hostname: esi.dev
+box: ubuntu/trusty64
+ip: "10.10.10.100"
+update: true
+databases:
+  - foo
+
+nodejs: true
+
+sites:
+    - esi.dev: /var/www/public
+php:
+  - xdebug
+  - composer
+  - wp
+
+synced_folders:
+  - host: "."
+    guest: "/var/www"
+    type: "nfs"
+
+variables:
+    - key: APP_ENV
+      value: local

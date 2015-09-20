@@ -8,6 +8,8 @@ end
 
 group :plugins do
   gem "vagrant-yarrs-and-yamls", path: "."
+  gem "vagrant-pristine"
+  gem "vagrant-hostsupdater"
   gem "vagrant-digitalocean"
   gem "vagrant-aws"
 end

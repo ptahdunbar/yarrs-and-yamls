@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
     spec.email         = ["yarr@piratedunbar.com"]
     spec.description   = "Configure your Vagrantfile using YAML"
     spec.summary       = spec.description
-    spec.homepage      = "https://github.com/ptahdunbar/yamls-and-yarrs"
+    spec.homepage      = "https://github.com/ptahdunbar/yarrs-and-yamls"
     spec.license       = "GPL v2+"
     #spec.post_install_message  = ""
 
