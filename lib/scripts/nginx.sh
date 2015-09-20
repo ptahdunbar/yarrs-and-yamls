@@ -10,6 +10,8 @@ if ! which nginx > /dev/null 2>&1; then
 	sudo apt-get install -y nginx
 	sudo apt-get install -y python-software-properties
 	sudo service nginx restart
+	rm /var/www/html/index.nginx-debian.html
+	find /var/www/html/ -type d -depth -empty -delete
 fi
 
 # check if not installed
